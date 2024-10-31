@@ -1,0 +1,49 @@
+  <presentation id="AutoMountTeamSites_Pres">
+        <text>Para especificar uma biblioteca a sincronizar:
+
+Abra um browser, inicie sessão no Office 365 como administrador global ou do SharePoint da sua organização e aceda à biblioteca a sincronizar.
+
+Clique no botão "Sincronizar" na biblioteca que pretende sincronizar automaticamente e, em seguida, clique em "Copiar ID da biblioteca".
+
+Clique em "Mostrar" e, em seguida, introduza um nome reconhecível para identificar a biblioteca no campo Nome do Valor e, em seguida, introduza o ID da biblioteca no campo Valor.
+        </text>
+        <listBox refId="AutoMountTeamSitesListBox">Bibliotecas:</listBox>
+      </presentation>
+
+      <presentation id="MinDiskSpaceLimitInMB_Pres">
+        <text>No campo valor, introduza a quantidade mínima de espaço em disco que pretende manter disponível.</text>
+        <text>Os valores válidos são de 0 a 10 240 000 MB</text>
+        <decimalTextBox refId="minDiskSpaceMB" defaultValue="200">Espaço em disco mínimo disponível:</decimalTextBox>
+      </presentation>
+
+      <presentation id="WarningMinDiskSpaceLimitInMB_Pres">
+        <text>No campo valor, introduza a quantidade de espaço em disco disponível abaixo da qual os utilizadores irão receber um aviso. Se utilizar esta política juntamente com "bloquear downloads de ficheiros quando os utilizadores estiverem com pouco espaço em disco", o valor para esta definição deverá ser maior do que o valor de bloqueio de downloads.</text>
+        <text>Os valores válidos são de 0 a 10 240 000 MB</text>
+        <decimalTextBox refId="warningMinDiskSpaceMB" defaultValue="500">Espaço em disco mínimo disponível:</decimalTextBox>
+      </presentation>
+
+      <presentation id="LocalMassDeleteFileDeleteThreshold_Pres">
+        <text>Especifique o número máximo de ficheiros que os utilizadores podem eliminar de cada vez antes de necessitarem de confirmar a operação.</text>
+        <text>Os valores válidos são de 1 a 100000.</text>
+        <decimalTextBox refId="LMDFileDeleteThresholdBox" defaultValue="200">Número de ficheiros:</decimalTextBox>
+      </presentation>
+
+      <presentation id="EnableODIgnoreListFromGPO_Pres">
+        <text>Para especificar palavras-chave, selecione "Mostrar" e, em seguida, introduza as palavras-chave no campo do valor.</text>
+        <text>Por exemplo, introduza "*.pst" para bloquear todos os ficheiros com a extensão pst. Introduza o   "despesa*" para bloquear ficheiros com nomes começados com "despesa". Introduza "**vendas*" para bloquear todos os ficheiros que tenham "vendas" no seu nome. As palavras-chave não são sensíveis a letras maiúsculas e minúsculas. Por exemplo, se introduzir "ícones.JPEG, "também bloqueará "ícones.jpeg". </text>
+        <text> </text>
+        <listBox refId="EnableODIgnoreListFromGPOListBox">Palavras-chave: </listBox>
+      </presentation>
+
+      <presentation id="EnableODIgnoreFolderListFromGPO_Pres">
+        <text>Para especificar palavras-chave, selecione "Mostrar" e introduza as palavras-chave no campo Valor.</text>
+        <text>Por exemplo, introduza "foo" para bloquear todas as pastas com o nome "foo". Introduza "despesa*" para bloquear as pastas cujos nomes comecem por "despesa". Introduza "*vendas*" para bloquear todas as pastas que tenham "vendas" no nome. As palavras-chave não são sensíveis a maiúsculas/minúsculas. Por exemplo, se introduzir "ÍCONES", também irá bloquear "ícones". </text>
+        <text> </text>
+        <listBox refId="EnableODIgnoreFolderListFromGPOListBox">Palavras-chave: </listBox>
+      </presentation>
+
+      <presentation id="EnableSyncAdminReports_Pres">
+      </presentation>
+      <presentation id="GranularFeedbackControl_Pres">
+        <text>Permitir que os utilizadores contactem a Microsoft para:</text>
+        <checkBox refId="Granula
