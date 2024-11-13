@@ -1,5 +1,6 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -24,8 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.nexoclub.ProductDetailsScreen
 import com.example.nexoclub.R
-import com.example.nexoclub.ui.theme.buttonGreen
 
 data class Product(
     val name: String,
@@ -90,143 +91,154 @@ fun HomeScreen() {
         Product("Farinha de Trigo 1kg", "Farinha de trigo refinada.", "R$ 4,49", Icons.Default.ShoppingCart)
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFF003366))
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Image(
-                painter = painterResource(R.drawable.nexo_logo),
-                contentDescription = null,
-                contentScale = ContentScale.Fit
-            )
-        }
-        LazyColumn(
+    var selectedProduct by remember { mutableStateOf<Product?>(null) }
+
+    if (selectedProduct != null) {
+        // Se um produto for selecionado, exibe a tela de detalhes
+        ProductDetailsScreen(
+            product = selectedProduct!!,
+            onClose = { selectedProduct = null }  // Fecha a tela de detalhes
+        )
+    } else {
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Bem vindo(a) ao app do NEXOClub! Confira as nossas ofertas",
-                    textAlign = TextAlign.Center
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFF003366))
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.nexo_logo),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit
                 )
             }
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 10.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Bem vindo(a) ao app do NEXOClub! Confira as nossas ofertas",
+                        textAlign = TextAlign.Center
+                    )
+                }
 
-            // Três produtos em destaque que preenchem a tela
-            items(destaque) { product ->
-                HighlightedProductCard(product)
-            }
+                // Três produtos em destaque que preenchem a tela
+                items(destaque) { product ->
+                    HighlightedProductCard(product, onClick = { selectedProduct = product })
+                }
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                // Alimentos Frescos
-                Text(
-                    text = "Alimentos Frescos",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp
-                )
-                Text(
-                    text = "Frutas, legumes e verduras frescos, selecionados com o maior cuidado."
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                ProductCarousel(carouselAlimentosFrescos) // Seu carrossel de produtos
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    // Alimentos Frescos
+                    Text(
+                        text = "Alimentos Frescos",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "Frutas, legumes e verduras frescos, selecionados com o maior cuidado."
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ProductCarousel(carouselAlimentosFrescos, onProductSelected = { product -> selectedProduct = product }) // Seu carrossel de produtos
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-            item {
-                // Bebidas
-                Text(
-                    text = "Bebidas",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp
-                )
-                Text(
-                    text = "Diversas opções de bebidas para todas as ocasiões, incluindo descontos especiais."
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                ProductCarousel(carouselBebidas)
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+                item {
+                    // Bebidas
+                    Text(
+                        text = "Bebidas",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "Diversas opções de bebidas para todas as ocasiões, incluindo descontos especiais."
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ProductCarousel(carouselBebidas, onProductSelected = { product -> selectedProduct = product })
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-            item {
-                // Carnes e Aves
-                Text(
-                    text = "Carnes e Aves",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp
-                )
-                Text(
-                    text = "Carnes e aves de alta qualidade, frescas e selecionadas."
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                ProductCarousel(carouselCarnes)
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+                item {
+                    // Carnes e Aves
+                    Text(
+                        text = "Carnes e Aves",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "Carnes e aves de alta qualidade, frescas e selecionadas."
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ProductCarousel(carouselCarnes, onProductSelected = { product -> selectedProduct = product })
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-            item {
-                // Laticínios
-                Text(
-                    text = "Laticínios",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp
-                )
-                Text(
-                    text = "Queijos, iogurtes, manteigas e outros produtos laticínios frescos e saborosos."
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                ProductCarousel(carouselLaticinios)
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+                item {
+                    // Laticínios
+                    Text(
+                        text = "Laticínios",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "Queijos, iogurtes, manteigas e outros produtos laticínios frescos e saborosos."
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ProductCarousel(carouselLaticinios, onProductSelected = { product -> selectedProduct = product })
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-            item {
-                // Produtos de Limpeza
-                Text(
-                    text = "Produtos de Limpeza",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp
-                )
-                Text(
-                    text = "Tudo para manter sua casa limpa e organizada, com os melhores produtos."
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                ProductCarousel(carouselLimpeza)
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+                item {
+                    // Produtos de Limpeza
+                    Text(
+                        text = "Produtos de Limpeza",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "Tudo para manter sua casa limpa e organizada, com os melhores produtos."
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ProductCarousel(carouselLimpeza, onProductSelected = { product -> selectedProduct = product })
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-            item {
-                // Mercearia
-                Text(
-                    text = "Mercearia",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp
-                )
-                Text(
-                    text = "Uma variedade de produtos básicos para o seu dia a dia, incluindo grãos, massas e enlatados."
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                ProductCarousel(carouselMercearia)
-                Spacer(modifier = Modifier.height(16.dp))
+                item {
+                    // Mercearia
+                    Text(
+                        text = "Mercearia",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "Uma variedade de produtos básicos para o seu dia a dia, incluindo grãos, massas e enlatados."
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ProductCarousel(carouselMercearia, onProductSelected = { product -> selectedProduct = product })
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
         }
     }
 }
 
 @Composable
-fun HighlightedProductCard(product: Product) {
+fun HighlightedProductCard(product: Product, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(120.dp),
+            .height(120.dp)
+            .clickable { onClick() },
         elevation = CardDefaults.cardElevation(8.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardColors(
@@ -272,32 +284,33 @@ fun HighlightedProductCard(product: Product) {
                 imageVector = product.icon,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(40.dp) // Ajuste do tamanho do ícone
+                    .size(40.dp)
             )
         }
     }
 }
 
 @Composable
-fun ProductCarousel(products: List<Product>) {
+fun ProductCarousel(products: List<Product>, onProductSelected: (Product) -> Unit) {
     LazyRow(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(products) { product ->
-            ProductCardCarousel(product)
+            ProductCardCarousel(product, onClick = { onProductSelected(product) })
         }
     }
 }
 
 @Composable
-fun ProductCardCarousel(product: Product) {
+fun ProductCardCarousel(product: Product, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .width(150.dp)
-            .height(100.dp),
-        elevation = CardDefaults.cardElevation(0.dp), // Sem sombra
+            .height(130.dp)
+            .clickable { onClick() },
+        elevation = CardDefaults.cardElevation(0.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardColors(
             containerColor = Color(0xFFC2D2FF),
@@ -317,16 +330,20 @@ fun ProductCardCarousel(product: Product) {
                 imageVector = product.icon,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(25.dp) // Ajuste do tamanho do ícone
+                    .size(25.dp)
             )
+
             Spacer(modifier = Modifier.height(4.dp))
+
             Text(
                 text = product.name,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center
             )
+
             Spacer(modifier = Modifier.height(4.dp))
+
             Text(
                 text = product.price,
                 fontWeight = FontWeight.Bold,
